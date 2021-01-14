@@ -283,7 +283,7 @@ end
 
 ### For `authorize`, `authorized?` and `unauthorized?`
 
-Wallaby has implemented the support for general Rails resourceful actions (`index`/`new`/`create`/`show`/`edit`/`update`/`destroy`) and CanCanCan comes with alias actions that mapped to Rails actions:
+Wallaby has implemented the support for general Rails resourcesful actions (`index`/`new`/`create`/`show`/`edit`/`update`/`destroy`) and CanCanCan comes with alias actions that mapped to Rails actions:
 
 ```ruby
 # lib/cancan/ability/actions.rb
@@ -296,7 +296,7 @@ def default_alias_actions
 end
 ```
 
-Therefore, when Wallaby checks permission in each resourceful action, they will be mapped to CanCanCan's action accordingly as below:
+Therefore, when Wallaby checks permission in each resourcesful action, they will be mapped to CanCanCan's action accordingly as below:
 
 ```ruby
 authorizer.authorized? :index, Product # => Same as `can? :read, Product`

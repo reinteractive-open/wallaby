@@ -7,91 +7,132 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5b94a30d79f3b6d8c4ce/test_coverage)](https://codeclimate.com/github/wallaby-rails/wallaby/test_coverage)
 [![Inch CI](https://inch-ci.org/github/wallaby-rails/wallaby.svg?branch=master)](https://inch-ci.org/github/wallaby-rails/wallaby)
 
-Wallaby is a Rails engine that autocompletes the resourceful controller and view for a given ORM model (ActiveRecord, HER) for admin interface and other purposes.
+Wallaby autocompletes typical resourcesful actions (including controller and view) for ORM models. Therefore, it can be used to generate Admin Interface or speed up Rails development.
 
-It can be extended to support any ORM model and can be easily and deeply customized at MVC's different aspects by using [decorators](https://github.com/wallaby-rails/wallaby/blob/master/docs/decorator.md), [controllers](https://github.com/wallaby-rails/wallaby/blob/master/docs/controllers.md), [type partials](https://github.com/wallaby-rails/wallaby/blob/master/docs/view.md), [servicers](https://github.com/wallaby-rails/wallaby/blob/master/docs/servicer.md), [authorizers](https://github.com/wallaby-rails/wallaby/blob/master/docs/authorizer.md), [paginators](https://github.com/wallaby-rails/wallaby/blob/master/docs/paginator.md) and [themes](https://github.com/wallaby-rails/wallaby/blob/master/docs/theme.md).
+It can be easily customized at different MVC aspects:
 
-[Try the demo here](https://wallaby-demo.herokuapp.com/admin/).
+- [controllers](https://github.com/wallaby-rails/wallaby/blob/master/docs/controllers.md) - used to overwrite the default resourcesful actions.
+- [decorators](https://github.com/wallaby-rails/wallaby/blob/master/docs/decorator.md) - used by the view to control what fields are rendered in what format.
+- [type partials](https://github.com/wallaby-rails/wallaby/blob/master/docs/view.md) - the corresponding templates rendered for the fields defined in decorator.
+- [servicers](https://github.com/wallaby-rails/wallaby/blob/master/docs/servicer.md) -
+- [authorizers](https://github.com/wallaby-rails/wallaby/blob/master/docs/authorizer.md) - used as the authorization helper
+- [paginators](https://github.com/wallaby-rails/wallaby/blob/master/docs/paginator.md) - used as the pagination helper
+- [themes](https://github.com/wallaby-rails/wallaby/blob/master/docs/theme.md) - complete sets of templates and partials implemented for specific purposes
+
+Currently, it supports ActiveRecord models and can be used together with CanCanCan and Pundit. Besides, it can be extended to support any ORM models and authorization frameworks.
+
+[Try the demo here](https://wallaby-demo.herokuapp.com/admin/) or take a look at the following screenshots:
 
 [![Animated Demo](https://raw.githubusercontent.com/wallaby-rails/wallaby/master/docs/demo-animated.gif)](https://raw.githubusercontent.com/wallaby-rails/wallaby/master/docs/demo-animated.gif)
 
 ## Install
 
-Add Wallaby to `Gemfile`.
+1. Add Wallaby to `Gemfile`.
 
-```ruby
-# Gemfile
-gem 'wallaby'
-```
+  ```ruby
+  # Gemfile
+  gem 'wallaby'
+  ```
 
-And re-bundle.
+2. Re-bundle.
 
-```shell
-bundle install
-```
+  ```shell
+  bundle install
+  ```
 
 ## Basic Usage
 
 ### As Admin Interface
 
-Just mount Wallaby engine to desired path, e.g. `/admin` in `config/routes.rb`.
+- Just mount Wallaby engine to desired path (e.g. `/admin`) in `config/routes.rb`.
 
-```ruby
-# config/routes.rb
-mount Wallaby::Engine, at: '/admin'
-```
+  ```ruby
+  # config/routes.rb
+  wallaby_mount at: '/admin'
+  ```
 
-Or run installer to generate default application classes/templates under namespace e.g. `Admin` and mount Wallaby engine to path `/admin`.
+- Or run installer to generate default application classes and templates under namespace e.g. **Admin** and mount Wallaby engine to path `/admin`.
 
-```shell
-rails g wallaby:install admin
-```
+  ```shell
+  rails g wallaby:install admin
+  ```
 
 Restart rails server, and visit http://localhost:3000/admin to start exploring!
 
 ### For General Purposes
 
-Instead of using Rails scaffold generator to generate all the boilerplate code, Wallaby can help to quickly get the pages up for ordinary resourceful actions.
+> Since 6.3.0
 
-For example, if a model `Blog` is generated:
+Instead of using Rails scaffold generator to generate all the boilerplate code, Wallaby can help to quickly get the pages up for ordinary resourcesful actions.
+
+For example, once an ActiveRecord model **Blog** is created:
 
 ```shell
 rails generate model blog title:string body:text
 rails db:migrate
 ```
 
-There are two ways to spin up things, choose what fits best:
+To spin up things:
 
-- add resources route to `config/routes.rb` using `wresources` helper without any needs of customization
-
-  ```ruby
-  # config/routes.rb
-  wresources :blogs, controller: 'wallaby/resources'
-  ```
-
-- add blogs controller for later customization
+1. Add blogs controller and include **Wallaby::ResourcesConcern**.
 
   ```ruby
   # app/controllers/blogs_controller.rb
-  class BlogsController < Wallaby::ResourcesController
+  class BlogsController < ApplicationController
+    include Wallaby::ResourcesConcern
   end
   ```
 
-  then add corresponding resources route using origin Rails `resources` helper
+2. Add corresponding resources route using **resources** helper
 
-  ```
+  ```ruby
   # config/routes.rb
   resources :blogs
   ```
 
-Restart rails server, and visit http://localhost:3000/blogs to give it a taste!
+It's possible to quickly apply a theme to save tuns of hours building an app. To do that, it goes:
+
+1. Add the theme gem to `Gemfile` then re-bundle:
+
+  ```ruby
+  # Gemfile
+  gem 'simple_blog_theme', git: 'https://github.com/wallaby-rails/simple_blog_theme.git', branch: 'master'
+  ```
+
+2. Set the theme name in the controller:
+
+  ```ruby
+  # app/controllers/blogs_controller.rb
+  class BlogsController < ApplicationController
+    include Wallaby::ResourcesConcern
+    self.theme_name = 'simple_blog_theme'
+  end
+  ```
+
+> NOTE: `wallaby` gem itself is just a theme as well, all the core funcationalities are in [wallaby-core](https://github.com/wallaby-rails/wallaby-core) gem.
+
+Restart rails server, and visit http://localhost:3000/blogs to give it a go!
 
 ## Documentation
 
-- [Features and Requirements](https://github.com/wallaby-rails/wallaby/blob/master/docs/features.md)
-- [Documentation](https://github.com/wallaby-rails/wallaby/blob/master/docs/README.md) for more usages and customization guides
-- [API Reference](https://www.rubydoc.info/gems/wallaby)
-- [Change Logs](https://github.com/wallaby-rails/wallaby/blob/master/CHANGELOG.md)
+- [Features](https://github.com/wallaby-rails/wallaby/blob/master/docs/features.md)
+- HOWTOs:
+  - Admin Interface:
+    - [Customize a typical resourcesful action]()
+    - [Add a non-resourcesful action]()
+    - []
+- All MVC aspects:
+  - [controllers](https://github.com/wallaby-rails/wallaby/blob/master/docs/controllers.md) - used to overwrite the default resourcesful actions.
+  - [decorators](https://github.com/wallaby-rails/wallaby/blob/master/docs/decorator.md) - used by the view to control what fields are rendered in what format.
+  - [type partials](https://github.com/wallaby-rails/wallaby/blob/master/docs/view.md) - the corresponding templates rendered for the fields defined in decorator.
+  - [servicers](https://github.com/wallaby-rails/wallaby/blob/master/docs/servicer.md) -
+  - [authorizers](https://github.com/wallaby-rails/wallaby/blob/master/docs/authorizer.md) - used as the authorization helper
+  - [paginators](https://github.com/wallaby-rails/wallaby/blob/master/docs/paginator.md) - used as the pagination helper
+  - [themes](https://github.com/wallaby-rails/wallaby/blob/master/docs/theme.md) - complete sets of templates and partials implemented for specific purposes
+- [Core API Reference](https://www.rubydoc.info/gems/wallaby-core)
+- Change Logs:
+  - [wallaby](https://github.com/wallaby-rails/wallaby/blob/master/CHANGELOG.md)
+  - [wallaby-core](https://github.com/wallaby-rails/wallaby-core/blob/master/CHANGELOG.md)
 
 ## Want to contribute?
 

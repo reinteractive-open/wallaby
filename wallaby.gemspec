@@ -11,14 +11,20 @@ Gem::Specification.new do |s|
   s.authors = ['Tianwen Chen']
   s.email = ['me@tian.im']
   s.homepage = 'https://github.com/wallaby-rails/wallaby'
-  s.summary = 'Autocomplete the resourceful actions and views for ORMs for admin interface and other purposes.'
+  s.summary = 'Autocomplete the resourcesful actions and views for ORMs for admin interface and other purposes.'
   s.description = s.summary
   s.license = 'MIT'
 
   s.files = Dir[
     '{app,config,db,lib,vendor}/**/*',
     'LICENSE',
-    'README.rdoc'
+    'README.md',
+    # docs:begin
+    '{docs}/**/*',
+    '_config.yml',
+    '_sass/custom/custom.scss',
+    'index.md',
+    # docs:end
   ]
 
   s.add_dependency 'wallaby-core'

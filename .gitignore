@@ -6,6 +6,8 @@
 /doc/
 /pkg/
 /spec/reports/
+.jekyll-cache/
+_site/
 doc/
 tmp/
 log/

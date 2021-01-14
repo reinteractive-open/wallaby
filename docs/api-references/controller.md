@@ -1,8 +1,16 @@
+---
+title: Controller
+layout: default
+nav_order: 1
+
+parent: API Reference
+---
+
 # Controller
 
 > NOTE: this is a documentation for 5.2.0 and above. please visit this [document for 5.1 and below](controller.5.1.md).
 
-Wallaby resources controller is just an ordinary Rails controller that has implemented default resourceful actions for all its subclasses. Therefore, customization becomes as simple as overriding the existing actions.
+Wallaby resources controller is just an ordinary Rails controller that has implemented default resourcesful actions for all its subclasses. Therefore, customization becomes as simple as overriding the existing actions.
 
 First of all, it's always recommended to create a base controller class `Admin::ApplicationController`, so that devs have better control of global changes/functions:
 
@@ -32,7 +40,7 @@ Configuration can be set for:
 - [.namespace](#namespace) (since 5.2.0) - specifies the namespace for current controller class and its subclasses so that their model classes can be retrived correctly.
 - [.model_class](#model_class) - specifies the associated model class for current controller class.
 
-The following resourceful actions can be customized:
+The following resourcesful actions can be customized:
 
 - [index](#index) - lists the collection of resources.
 - [new](#new) - displays resource creation form.
@@ -42,7 +50,7 @@ The following resourceful actions can be customized:
 - [update](#update) - handles resource update.
 - [destroy](#destroy) - handles resource deletion.
 
-For non-resourceful actions:
+For non-resourcesful actions:
 
 - [home](#home) (since 5.1.0) - works as the landing page action.
 
@@ -82,7 +90,7 @@ class Admin::ProductsController < Admin::ApplicationController
 end
 ```
 
-Then the customization will be as simple as overriding the below default resourceful actions ([index](#index), [new](#new), [create](#create), [show](#show), [edit](#edit), [update](#update) and [destroy](#destroy)).
+Then the customization will be as simple as overriding the below default resourcesful actions ([index](#index), [new](#new), [create](#create), [show](#show), [edit](#edit), [update](#update) and [destroy](#destroy)).
 
 # Configuration
 

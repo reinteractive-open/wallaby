@@ -1,3 +1,11 @@
+---
+title: API Reference
+layout: default
+nav_order: 3
+
+has_children: true
+---
+
 # Documentation
 
 - Understand the [naming conventions](convention.md) Wallaby applies to connect model with everything.
@@ -6,7 +14,7 @@
 
 - [Global configurations](configuration.md)
 - [Declare routes](route.md)
-- [Customize resourceful controller actions](controller.md)
+- [Customize resourcesful controller actions](controller.md)
 - [Use Decorator to define Wallaby's view behavior](decorator.md)
 - [Create Type Partials for custom type defined in Decorator](view.md)
 - [Customize model life cycle with Servicer](servicer.md)
